@@ -1,68 +1,48 @@
-# Prerequisites
-*.d
+# Ejecutable de la práctica
+/evolucion_maquina
+/evolucion_maquina.exe
+a.out
 
-# Compiled Object files
-*.slo
-*.lo
+# Archivos objeto y de precompilación
+*.d
 *.o
 *.obj
-
-# Precompiled Headers
+*.slo
+*.lo
 *.gch
 *.pch
 
-# Linker files
-*.ilk
-
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
+# Bibliotecas compiladas
 *.so
+*.so.*
 *.dylib
 *.dll
-*.so.*
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
 *.a
+*.la
+*.lai
 *.lib
 
-# Executables
+# Otros ejecutables
 *.exe
 *.out
 *.app
 
-# Build directories
+# Archivos del enlazador y del depurador
+*.ilk
+*.pdb
+*.dwo
+
+# Carpetas de compilación
 build/
 Build/
 build-*/
 
-# CMake generated files
-CMakeFiles/
-CMakeCache.txt
-cmake_install.cmake
-Makefile
-install_manifest.txt
-compile_commands.json
-
-# Temporary files
+# Archivos temporales
 *.tmp
 *.log
 *.bak
 *.swp
 
-# vcpkg
-vcpkg_installed/
-
-# debug information files
-*.dwo
-
-# test output & cache
-Testing/
-.cache/
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
