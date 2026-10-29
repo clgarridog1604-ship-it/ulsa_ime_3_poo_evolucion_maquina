@@ -1,0 +1,33 @@
+{
+  // ---- Copilot: no code suggestions (Copilot Chat stays available) ----
+  "github.copilot.enable": { "*": false },
+  "github.copilot.editor.enableAutoCompletions": false,
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "editor.inlineSuggest.enabled": false,
+
+  // ---- No autocomplete: students type everything ----
+  "editor.quickSuggestions": { "other": "off", "comments": "off", "strings": "off" },
+  "editor.suggestOnTriggerCharacters": false,
+  "editor.wordBasedSuggestions": "off",
+  "editor.snippetSuggestions": "none",
+  "editor.tabCompletion": "off",
+  "editor.acceptSuggestionOnEnter": "off",
+  "editor.parameterHints.enabled": false,
+  "editor.inlayHints.enabled": "off",
+  "editor.lightbulb.enabled": "off",
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+
+  // ---- C/C++ extension: no completion, but errors still shown ----
+  "C_Cpp.autocomplete": "disabled",
+  "C_Cpp.suggestSnippets": false,
+  "C_Cpp.autocompleteAddParentheses": false,
+  "C_Cpp.errorSquiggles": "enabled",
+  "C_Cpp.inlayHints.parameterNames.enabled": false,
+  "C_Cpp.inlayHints.autoDeclarationTypes.enabled": false,
+
+  // Hover stays on so students can read the error messages on the red underlines
+  "editor.hover.enabled": "on",
+
+  "chat.disableAIFeatures": false
+}
