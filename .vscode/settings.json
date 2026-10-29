@@ -29,5 +29,5 @@
   // Hover stays on so students can read the error messages on the red underlines
   "editor.hover.enabled": "on",
 
-  "chat.disableAIFeatures": false
+  "chat.disableAIFeatures": true
 }

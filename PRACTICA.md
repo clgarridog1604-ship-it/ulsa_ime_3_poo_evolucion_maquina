@@ -1341,7 +1341,7 @@ Tu diseño funciona. ¿Qué más podría hacer? Elige los que te interesen y an�
 - Agrega a `ControlDeLinea` un método que muestre la máquina con mayor capacidad por hora.
 - Crea una máquina que **comparta** un motor con otra (el motor existe fuera de ambas). ¿Qué relación es? ¿Qué riesgo aparece si el motor se destruye antes que las máquinas?
 - Investiga la palabra `final` de C++11 y úsala para que nadie pueda heredar de `Torno`. ¿Cuándo sería útil en la planta?
-- Proponer una mejora propia que no esté en esta lista.
+- Propón una mejora propia que no esté en esta lista.
 
 ## Fase 5. Publicar en GitHub
 

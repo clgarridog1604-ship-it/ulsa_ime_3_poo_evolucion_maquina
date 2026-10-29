@@ -105,7 +105,7 @@ a) ¿Qué advertencia mostró el compilador? ¿Por qué decimos que ya te estaba
 
 [Inserta aquí tu respuesta]
 
-b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor no fuera virtual?
+b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor no fuera virtual? ¿A qué máquina corresponde el primer "Destruyendo Maquina" después de "Fin de main"?
 
 [Inserta aquí tu respuesta]
 
