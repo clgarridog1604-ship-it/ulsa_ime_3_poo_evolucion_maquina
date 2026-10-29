@@ -8,27 +8,27 @@ Llena cada espacio conforme avances en las fases de [PRACTICA.md](PRACTICA.md).
 
 **1.1 El problema con mis propias palabras**
 
-[Inserta aquí tu respuesta]
+La planta necesita un sistema para controlar las diferentes máquinas de la línea de producción, hay que hacer una jerarquía de clases para reutilizar códigos y evitar errores
 
 **1.2 Reglas que siempre deben cumplirse en una máquina** (escribe al menos tres)
 
-1. _____
-2. _____
-3. _____
+1. El nombre de la máquina no puede estar vació
+2. El número de piezas producidad, ni el tiempo trabajado puede ser 0
+3. El tiempo del ciclo de trabajo siempre tiene que ser mayor a 0
+4. Cada ciclo debe registrar solamente una pieza producida
 
 **1.3 ¿Quién más usa la clase `Maquina`? ¿Qué podría salir mal si otro equipo crea una máquina nueva sin conocer tus reglas?**
 
-[Inserta aquí tu respuesta]
+La clase maquina puede ser utilizada por otro desarrollador para crear más máquinas para la línea de producción, si no conocen sus regalas pueden llegar a crear máquinas con estados y/o valores invalidos.
 
 ## Fase 2. Diseñar la solución
 
 **2.1 Diagrama inicial (Etapa 0)**
 
-![Diagrama inicial](diseno_inicial.png)
+![Diagrama Inicial](Diagrama_inicial.drawio.png)
 
 **2.2 Diagrama final (Etapa 9)**
-
-![Diagrama final](diseno_solucion.png)
+![Diagrama Final](Diagrama_Final.drawio-1.png)
 
 **2.3 ¿Qué cambió entre los dos diagramas?**
 
