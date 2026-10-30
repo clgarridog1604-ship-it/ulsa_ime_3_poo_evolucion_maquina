@@ -80,31 +80,33 @@ El compilador indicó que el método estaba ocultando una función virtual de la
 
 a) ¿Por qué la línea procesó todo como "generico" si `procesar()` ya es virtual?
 
-Porque se produjo slicing al almacenar objetos derivados dentro de un vector.
+Porque se produjo slicing al almacenar objetos derivados dentro de un vector.   
 
 b) ¿Por qué el torno y la fresadora originales quedaron con 0 piezas?
 
-[Inserta aquí tu respuesta]
+Porque ControlDeLinea trabajaba con copias de los objetos originales.
 
 c) La relación entre `ControlDeLinea` y `Maquina`, ¿es composición o agregación? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+Agregación, porque las máquinas existen independientemente de la línea y ésta no las destruye.
 
 **3.4 Etapa 4. Destructores**
 
 | Momento | Mensajes de destrucción que aparecieron |
 | --- | --- |
-| `delete temporal;` sin destructor virtual | _____ |
-| `delete temporal;` con destructor virtual | _____ |
-| Al terminar `main` (torno y fresadora) | _____ |
+| `delete temporal;` sin destructor virtual | Destruyendo Maquina |
+| `delete temporal;` con destructor virtual | Destruyendo Torno → Destruyendo Motor → Destruyendo Maquina |
+| Al terminar `main` (torno y fresadora) | Destruyendo Motor → Destruyendo Maquina (para cada objeto según corresponda) |
 
 a) ¿Qué advertencia mostró el compilador? ¿Por qué decimos que ya te estaba avisando del problema?
 
-[Inserta aquí tu respuesta]
+"deleting object of polymorphic class type that has non-virtual destructor"
+
+Indicaba que destruir un objeto derivado mediante un puntero a la base podía causar comportamiento indefinido.
 
 b) ¿Por qué el torno de `main` sí se destruyó completo aunque el destructor no fuera virtual? ¿A qué máquina corresponde el primer "Destruyendo Maquina" después de "Fin de main"?
 
-[Inserta aquí tu respuesta]
+Porque era un objeto local de tipo Torno y el compilador conocía su tipo real durante la destrucción.
 
 **3.5 Etapa 5. La clase abstracta**
 
@@ -114,63 +116,71 @@ a) Copia los mensajes de error y explica con tus palabras qué dice cada uno.
 
 b) ¿Por qué es mejor este error de compilación que el comportamiento "generico" de antes?
 
-[Inserta aquí tu respuesta]
+Porque detecta el problema antes de ejecutar el programa y evita reportes incorrectos.
 
 **3.6 Etapa 6. El contrato que el compilador no ve**
 
 a) ¿Qué partes del contrato violó `InspeccionVisual`?
 
-[Inserta aquí tu respuesta]
+No registró piezas.
+No agregó tiempo.
+Regresó un tiempo de ciclo igual a 0.
 
 b) ¿Por qué el compilador no lo detectó?
 
-[Inserta aquí tu respuesta]
+Porque las firmas de los métodos eran correctas; el compilador sólo verifica la forma del contrato, no su comportamiento.
 
 c) ¿Qué pasaría si el próximo equipo tampoco lee el comentario del contrato?
 
-[Inserta aquí tu respuesta]
+Se repetirían los mismos errores y los reportes volverían a contener información incorrecta.
 
 **3.7 Etapa 7. La base hace cumplir el contrato**
 
 a) ¿Cómo puede una clase derivada sobrescribir un método que es privado en la base?
 
-[Inserta aquí tu respuesta]
+Porque private controla el acceso y virtual controla el polimorfismo. Son mecanismos independientes.
 
 b) ¿Qué ocurre ahora con una máquina cuyo tiempo de ciclo es 0? Compáralo con la Etapa 6.
 
-[Inserta aquí tu respuesta]
+Ahora se lanza una excepción y el error se detecta inmediatamente.
 
 c) ¿Por qué la línea ignoró el "atajo" del torno, pero la llamada directa no? ¿Cómo corregiste el diseño?
 
-[Inserta aquí tu respuesta]
+Porque la línea usa Maquina* y llama al procesar() de la clase base.
+Eliminando el atajo y manteniendo el patrón NVI.
 
 **3.8 Etapa 8. Herencia mal usada**
 
 a) Da al menos dos razones por las que `BandaTransportadora : public Motor` es un error de diseño.
 
-[Inserta aquí tu respuesta]
+Una banda transportadora no es un motor.
+Se expone fijarVelocidad() al resto del programa cuando debería ser interno.
 
 b) La relación entre `BandaTransportadora` y `Motor`, ¿es composición o agregación? ¿Por qué?
 
-[Inserta aquí tu respuesta]
+Composición, porque la banda tiene un motor propio para funcionar.
 
 **3.9 Etapa 9. La librería y la prueba final**
 
 a) Después de agregar la `Cortadora`, ¿qué archivos mostró `git status`? ¿Cuántos archivos de la librería tuviste que modificar?
 
-[Inserta aquí tu respuesta]
+Ninguno.
+Sólo se agregaron:
+
+Cortadora.h
+Cortadora.cpp
+main.cpp
 
 b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
-[Inserta aquí tu respuesta]
-
+Aparecieron errores "undefined reference" porque el enlazador resuelve dependencias de izquierda a derecha.
 **3.10 Bitácora de dudas**
 
 | # | Etapa | Duda | Cómo la resolví | Fuente |
 | --- | --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ | _____ |
-| 3 | _____ | _____ | _____ | _____ |
+| 1 | 2 | ¿Por qué tiempoCicloSeg() de Fresadora no sobrescribía el método de la base? | Revisé la firma del método y encontré que faltaba const; al agregar override el compilador mostró el error. | Documentación de C++ y guía de la práctica |
+| 2 | 3 | ¿Por qué la línea procesaba todo como genérico aunque procesar() era virtual? | Analicé el uso de vector<Maquina> y comprendí el problema de slicing. Se corrigió usando vector<Maquina*>. | Guía de la práctica |
+| 3 | 4 | ¿Por qué se mostraba una advertencia al hacer delete mediante un puntero de tipo Maquina*? | Investigué el uso de destructores virtuales y entendí que la base debía tener un destructor virtual para destruir correctamente las derivadas. | Guía de la práctica y documentación de C++ |
 
 ## Fase 4. Probar y mejorar
 
@@ -178,24 +188,24 @@ b) ¿Qué pasó al escribir `-lplanta` antes de `src/main.cpp`? ¿Por qué?
 
 | # | Caso | Resultado esperado | Resultado obtenido | ¿Pasa? |
 | --- | --- | --- | --- | --- |
-| 1 | Máquina con nombre vacío | Excepción con mensaje claro | _____ | _____ |
-| 2 | Reporte de una línea vacía | "La linea no tiene maquinas" | _____ | _____ |
-| 3 | `agregar(nullptr)` | Devuelve `false` | _____ | _____ |
-| 4 | Reporte antes de ejecutar el turno | 0 piezas, 0 s y capacidad calculada | _____ | _____ |
-| 5 | Turno de 0 ciclos | Nada cambia | _____ | _____ |
-| 6 | Torno con 3 ciclos | 3 piezas, 135 s, 80 pzas/h | _____ | _____ |
-| 7 | Máquina con `tiempoCicloSeg()` igual a 0 | Excepción con mensaje claro | _____ | _____ |
-| 8 | Máquina con `tiempoCicloSeg()` negativo | Excepción con mensaje claro | _____ | _____ |
-| 9 | La misma máquina agregada dos veces | _____ | _____ | _____ |
+| 1 | Máquina con nombre vacío | Excepción con mensaje claro | Se lanzó invalid_argument indicando que el nombre no puede estar vacío | | si |
+| 2 | Reporte de una línea vacía | "La linea no tiene maquinas" | Se mostró el mensaje esperado | si |
+| 3 | `agregar(nullptr)` | Devuelve `false` | El método devolvió false y no agregó la máquina | si |
+| 4 | Reporte antes de ejecutar el turno | 0 piezas, 0 s y capacidad calculada | Se mostraron 0 piezas, 0 s y la capacidad según cada máquina | si |
+| 5 | Turno de 0 ciclos | Nada cambia | Los valores permanecieron sin cambios | si |
+| 6 | Torno con 3 ciclos | 3 piezas, 135 s, 80 pzas/h | Se obtuvieron exactamente esos valores | si |
+| 7 | Máquina con `tiempoCicloSeg()` igual a 0 | Excepción con mensaje claro | Se lanzó logic_error indicando tiempo de ciclo inválido | si |
+| 8 | Máquina con `tiempoCicloSeg()` negativo | Excepción con mensaje claro | Se lanzó logic_error indicando tiempo de ciclo inválido | si |
+| 9 | La misma máquina agregada dos veces | No debería duplicarse en la línea | La máquina apareció dos veces en el reporte y procesó el doble de ciclos | no |
 
 **4.2 Bitácora de mejoras**
 
 | # | Falla o mejora detectada | Qué cambié | Por qué |
 | --- | --- | --- | --- |
-| 1 | _____ | _____ | _____ |
-| 2 | _____ | _____ | _____ |
+| 1 | Una misma máquina podía agregarse varias veces | Agregué validación para evitar duplicados en ControlDeLinea | Evita reportes incorrectos y procesamiento repetido |
+| 2 | Mensajes de error poco descriptivos | Mejoré los textos de las excepciones | Facilita identificar rápidamente la causa del problema |
 
-Retos opcionales que intenté: _____
+Retos opcionales que intenté: Rechazar máquinas duplicadas en la línea de producción. Cabe resaltar el intentar
 
 ## Fase 5. Publicar en GitHub
 
@@ -209,23 +219,23 @@ Retos opcionales que intenté: _____
 
 | Error | Etapa en que apareció | Restricción que lo impide ahora | ¿Quién lo detecta: el compilador o el programa? |
 | --- | --- | --- | --- |
-| Contadores con valores inválidos | _____ | _____ | _____ |
-| Máquina "fantasma" creada a escondidas | _____ | _____ | _____ |
-| Método que no sobrescribe por un `const` | _____ | _____ | _____ |
-| Máquinas copiadas y "rebanadas" | _____ | _____ | _____ |
-| Destrucción incompleta | _____ | _____ | _____ |
-| Máquina sin `procesar()` propio | _____ | _____ | _____ |
-| Tiempo de ciclo inválido | _____ | _____ | _____ |
-| Derivada que no registra sus piezas | _____ | _____ | _____ |
+| Contadores con valores inválidos |1 | Atributos privados y métodos de validación | Compilador |
+| Máquina "fantasma" creada a escondidas | 1 | Constructor explicit | Compilador |
+| Método que no sobrescribe por un `const` | 2 | Uso de override | Compilador |
+| Máquinas copiadas y "rebanadas" | 3 | Uso de punteros a Maquina en lugar de objetos por valor | Diseño / Compilador |
+| Destrucción incompleta | 4 | Destructor virtual | Compilador |
+| Máquina sin `procesar()` propio | 5 | Clase abstracta y métodos virtuales puros | Compilador |
+| Tiempo de ciclo inválido | 6 y7 | tiempoCicloValidado() | Programa |
+| Derivada que no registra sus piezas | 7 | Patrón NVI con procesar() controlado por la base | Programa |
 
 **6.2 ¿Cuál de los errores fue el más peligroso: el de compilación, la advertencia o el que compilaba sin problemas? ¿Por qué?**
 
-[Inserta aquí tu respuesta]
+El error más peligroso fue el que compilaba sin problemas. Los errores de compilación y las advertencias llaman la atención del programador, pero un error que compila correctamente puede producir resultados incorrectos sin que nadie lo note. Un ejemplo fue la estación de inspección que generaba reportes con capacidad infinita y cero piezas procesadas.
 
 **6.3 ¿Qué aprendiste en esta práctica?**
 
-[Inserta aquí tu respuesta]
+Aprendí la importancia de diseñar correctamente una jerarquía de clases utilizando encapsulamiento, herencia y polimorfismo. También comprendí cómo los modificadores private, protected, virtual, override, los destructores virtuales y las clases abstractas ayudan a prevenir errores. Además, aprendí a distinguir entre herencia, composición y agregación, y a diseñar clases que sean fáciles de extender sin modificar el código existente.
 
 **6.4 ¿Qué cambiarías de tu proceso la próxima vez?**
 
-[Inserta aquí tu respuesta]
+La próxima vez dedicaría más tiempo al diseño UML antes de programar. También realizaría pruebas más frecuentes después de cada cambio y prestaría mayor atención a las advertencias del compilador, ya que pueden anticipar errores importantes antes de que lleguen a la ejecución.
