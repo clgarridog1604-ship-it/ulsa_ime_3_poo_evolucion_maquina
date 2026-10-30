@@ -34,56 +34,53 @@ La clase maquina puede ser utilizada por otro desarrollador para crear más máq
 
 | Elemento | Etapa 0 | Etapa 9 | Etapa que lo cambió |
 | --- | --- | --- | --- |
-| Visibilidad de los atributos de `Maquina` | _____ | _____ | _____ |
-| `procesar()` | _____ | _____ | _____ |
-| `tiempoCicloSeg()` | _____ | _____ | _____ |
-| Destructor de `Maquina` | _____ | _____ | _____ |
-| ¿Se pueden crear objetos `Maquina`? | _____ | _____ | _____ |
-| Relación `ControlDeLinea` - `Maquina` | _____ | _____ | _____ |
-| Relación `Torno` - `Motor` | _____ | _____ | _____ |
-| Relación `BandaTransportadora` - `Motor` | _____ | _____ | _____ |
-
+| Visibilidad de los atributos de `Maquina` | public | private | etapa 1 |
+| `procesar()` | procesos normal | No virtual | 7 |
+| `tiempoCicloSeg()` | No existía | virtual puro | 5 |
+| Destructor de `Maquina` | No existía | virtual = maquina | 4 |
+| ¿Se pueden crear objetos `Maquina`? | Si | No | 5 |
+| Relación `ControlDeLinea` - `Maquina` | No existía | Agregación | 3 |
+| Relación `Torno` - `Motor` | No existe | Composición | 4 |
+| Relación `BandaTransportadora` - `Motor` | Era una herencia | Composición | 8 |
 ## Fase 3. Implementar
 
 **3.0 Etapa 0. Una máquina sin reglas**
 
 a) ¿Qué imprime `ejecutarTurno()` para el torno y la fresadora? ¿Por qué no imprime "torneando" ni "fresando"?
-
-[Inserta aquí tu respuesta]
+Porque ejecutarTurno recibe un objeto de tipo máquina y procesar no es virtual. El compilador llama un enlace estático llamado Maquina::procesar().
 
 b) ¿Por qué el torno acumula 65 s y no 135 s?
-
-[Inserta aquí tu respuesta]
+Porque a la primera llamada directa usa Torno::procesar y suma 45 segundos, mientras que las otras veces usan Maquina::procesar() y suman 10 segundos cada una
 
 **3.1 Etapa 1. Invariantes y constructores explicit**
 
 a) ¿Qué regla de la sección 1.2 rompió `torno.piezasProcesadas = -5;`?
 
-[Inserta aquí tu respuesta]
+La que dice que las piezas procesadas no pueden ser negativas
 
 b) ¿De dónde salió la máquina "Fantasma"? ¿Qué hizo el compilador sin que se lo pidieras?
 
-[Inserta aquí tu respuesta]
+De que el compilador convirtío el string a un objeto maquina 
 
 c) ¿Qué tuviste que cambiar en `Torno` y `Fresadora` y por qué?
 
-[Inserta aquí tu respuesta]
+Cambie el acceso directo por un getNombre(), registrarPiezas(), agregarTiempo() porque los atributos se volvieron pribados 
 
 **3.2 Etapa 2. Virtual y override**
 
 a) La fresadora acumula 180 s, pero reporta 360 pzas/h. ¿Por qué un cálculo usó 60 s y el otro 10 s?
 
-[Inserta aquí tu respuesta]
+tiempoTrabajadoSeg usó el método de la fresadora, pero capacidadPorHora() llamó a la versión heredada de Maquina debido a que faltaba el const y realmente no estaba sobrescribiendo el método.
 
 b) ¿Tu compilador mostró alguna advertencia antes de usar `override`? ¿Qué mensaje dio después de agregar `override`?
 
-[Inserta aquí tu respuesta]
+El compilador indicó que el método estaba ocultando una función virtual de la clase base. Al usar override apareció un error indicando que no sobrescribía ningún método.
 
 **3.3 Etapa 3. La línea de producción**
 
 a) ¿Por qué la línea procesó todo como "generico" si `procesar()` ya es virtual?
 
-[Inserta aquí tu respuesta]
+Porque se produjo slicing al almacenar objetos derivados dentro de un vector.
 
 b) ¿Por qué el torno y la fresadora originales quedaron con 0 piezas?
 
