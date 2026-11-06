@@ -211,7 +211,7 @@ Retos opcionales que intenté: Rechazar máquinas duplicadas en la línea de pro
 
 **5.1 Enlace a mi fork**
 
-[Inserta aquí el enlace a tu fork]
+https://github.com/clgarridog1604-ship-it/ulsa_ime_3_poo_evolucion_maquina
 
 ## Cierre y reflexión
 
