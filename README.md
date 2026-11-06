@@ -239,3 +239,5 @@ Aprendí la importancia de diseñar correctamente una jerarquía de clases utili
 **6.4 ¿Qué cambiarías de tu proceso la próxima vez?**
 
 La próxima vez dedicaría más tiempo al diseño UML antes de programar. También realizaría pruebas más frecuentes después de cada cambio y prestaría mayor atención a las advertencias del compilador, ya que pueden anticipar errores importantes antes de que lleguen a la ejecución.
+
+Codigo para ejecutar: g++ -Wall -Wextra -std=c++17 -Iinclude src\*.cpp -o planta.exe > errores.txt 2>&1
